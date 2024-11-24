@@ -49,8 +49,7 @@ from transformers.models.mistral.modeling_mistral import (
     MistralForCausalLM as MistralForCausalLMHF,
 )
 from transformers.models.mistral.modeling_mistral import (
-    MistralForSequenceClassification,
-    MistralLinearScalingRotaryEmbedding,
+    MistralForSequenceClassification
 )
 from transformers.models.mistral.modeling_mistral import MistralMLP as MistralMLPHF
 from transformers.models.mistral.modeling_mistral import MistralModel as MistralModelHF
