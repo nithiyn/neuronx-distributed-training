@@ -83,9 +83,9 @@ def train(cfg) -> None:
             data_module = HFDataModule(cfg, trainer)
 
         # Support for both HFMistralModule and HFLLamaModule
-        if cfg.name == 'llama':
+        if cfg.name == 'hf_llama':
             model = HFLLamaModule(cfg, trainer)
-        elif cfg.name == 'mistral':
+        elif cfg.name == 'hf_mistral':
             model = HFMistralModule(cfg, trainer)
         else:
             raise ValueError(f"Unsupported HF model type: {cfg.model.type}")
