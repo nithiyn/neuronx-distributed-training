@@ -49,8 +49,7 @@ from transformers.models.llama.modeling_llama import (
     LlamaForCausalLM as LlamaForCausalLMHF,
 )
 from transformers.models.llama.modeling_llama import (
-    LlamaForSequenceClassification,
-    LlamaLinearScalingRotaryEmbedding,
+    LlamaForSequenceClassification
 )
 from transformers.models.llama.modeling_llama import LlamaMLP as LlamaMLPHF
 from transformers.models.llama.modeling_llama import LlamaModel as LlamaModelHF
