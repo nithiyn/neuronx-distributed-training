@@ -3,7 +3,7 @@
 source ./train_setup.sh
 
 # For SFT: use the config file megatron_llama2_7B_SFT_config or megatron_llama3_8B_SFT_config
-: ${CONF_FILE:=megatron_gpt_config} 
+: ${CONF_FILE:=hf_mistral_7B_SFT_config} 
 
 if [ "$COMPILE" = "1" ]; then
     echo "compiling only run"
