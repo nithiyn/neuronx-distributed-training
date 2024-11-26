@@ -99,6 +99,11 @@ logger = logging.get_logger(__name__)
 
 _CONFIG_FOR_DOC = "MistralConfig"
 
+#handle missing attribute pretraining_tp in MistralConfig
+def ensure_pretraining_tp(config, default_value=1):
+    if not hasattr(config, "pretraining_tp"):
+        config.pretraining_tp = default_value
+    return config
 
 # Copied from transformers.models.bart.modeling_bart._make_causal_mask
 def _make_causal_mask(
@@ -153,6 +158,7 @@ class MistralRMSNorm(MistralRMSNormHF):
 
 class MistralMLP(MistralMLPHF):
     def __init__(self, config):
+        config = ensure_pretraining_tp(config)  # Ensure the attribute exists
         nn.Module.__init__(self)
         self.config = config
         self.pretraining_tp = config.pretraining_tp
@@ -241,6 +247,7 @@ class MistralAttention(MistralAttentionHF):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
     def __init__(self, config: MistralConfig):
+        config = ensure_pretraining_tp(config)  # Ensure the attribute exists
         nn.Module.__init__(self)
         self.config = config
         self.hidden_size = config.hidden_size
@@ -642,6 +649,7 @@ class MistralForCausalLM(MistralForCausalLMHF):
     _tied_weights_keys = ["lm_head.weight"]
 
     def __init__(self, config):
+        config = ensure_pretraining_tp(config)  # Ensure the attribute exists
         MistralPreTrainedModel.__init__(self, config)
         self.model = MistralModel(config)
         self.pretraining_tp = config.pretraining_tp
