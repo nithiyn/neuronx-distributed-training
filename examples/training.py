@@ -28,6 +28,9 @@ from neuronx_distributed_training.lightning_modules.data.sft_data_module import 
 from neuronx_distributed_training.lightning_modules.model.hf_models.llama_model import (
     HFLLamaModule,
 )
+from neuronx_distributed_training.lightning_modules.model.hf_models.mixtral_model import (
+    HFMixtralModule,
+)
 from neuronx_distributed_training.lightning_modules.nlp_overrides import (
     NLPCheckpointIO,
     NLPDDPStrategy,
@@ -73,14 +76,23 @@ def train(cfg) -> None:
         if getattr(cfg.data, "use_sft_style_data_module", False):
             data_module = SFTDataModule(cfg, trainer)
         else:
-            data_module = MegatronDataModule(cfg, trainer)        
+            data_module = MegatronDataModule(cfg, trainer)
         model = MegatronGPTModel(cfg, trainer)
     elif cfg.model_source == 'hf':
         if getattr(cfg.data, "use_sft_style_data_module", False):
             data_module = SFTDataModule(cfg, trainer)
         else:
             data_module = HFDataModule(cfg, trainer)
-        model = HFLLamaModule(cfg, trainer)        
+
+        # Support for both HFMistralModule and HFLLamaModule
+        if cfg.name == 'hf_llama':
+            model = HFLLamaModule(cfg, trainer)
+        elif cfg.name == 'hf_mixtral':
+            model = HFMixtralModule(cfg, trainer)
+        else:
+            raise ValueError(f"Unsupported HF model type: {cfg.model.type}")
+
     else:
         raise NotImplementedError
+
     trainer.fit(model, datamodule=data_module)
